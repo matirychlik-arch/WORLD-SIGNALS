@@ -312,32 +312,92 @@ export default function WorldSignal() {
 
 function IntroScreen({onStart,onGlobal}){
   return(
-    <div style={{background:"#080c10",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:"'Courier New',monospace",padding:24}}>
-      <style>{`@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}} @keyframes fade-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
-      <div style={{position:"fixed",top:0,left:0,right:0,height:"2px",background:"linear-gradient(90deg,transparent,rgba(74,158,255,0.3),transparent)",animation:"scan 8s linear infinite",pointerEvents:"none"}}/>
-      <div style={{textAlign:"center",animation:"fade-in 0.8s ease",maxWidth:380,width:"100%"}}>
-        <div style={{fontSize:11,letterSpacing:4,color:"#3a5a6a",marginBottom:16}}>SYSTEM OPERACYJNY v2.1</div>
-        <div style={{fontSize:32,fontWeight:900,letterSpacing:8,color:"#c8d6e0",marginBottom:4,textShadow:"0 0 40px rgba(74,158,255,0.3)"}}>WORLD</div>
-        <div style={{fontSize:32,fontWeight:900,letterSpacing:8,color:"#4a9eff",marginBottom:24,textShadow:"0 0 40px rgba(74,158,255,0.5)"}}>SIGNAL</div>
-        <div style={{width:"100%",height:1,background:"linear-gradient(90deg,transparent,#1e2d3d,transparent)",marginBottom:24}}/>
-        <div style={{fontSize:12,color:"#4a6a7a",lineHeight:1.8,marginBottom:32}}>
-          Symulator kryzysu globalnego oparty<br/>o dane Polymarket + newsy real-time.<br/>
-          <span style={{color:"#c8d6e0"}}>Twoje decyzje kształtują trajektorię świata.</span>
+    <div style={{background:"#080c10",height:"100vh",display:"flex",flexDirection:"column",fontFamily:"'Courier New',monospace",overflow:"hidden"}}>
+      <style>{`
+        @keyframes scan{0%{transform:translateY(-100vh)}100%{transform:translateY(100vh)}}
+        @keyframes fade-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+        @keyframes glow-title{0%,100%{text-shadow:0 0 40px rgba(74,158,255,0.3)}50%{text-shadow:0 0 80px rgba(74,158,255,0.6)}}
+        .intro-btn-primary:hover{background:rgba(74,158,255,0.12)!important}
+        .intro-btn-secondary:hover{border-color:#a78bfa!important;color:#a78bfa!important}
+      `}</style>
+      {/* scan line */}
+      <div style={{position:"fixed",top:0,left:0,right:0,height:"1px",background:"linear-gradient(90deg,transparent,rgba(74,158,255,0.4),transparent)",animation:"scan 6s linear infinite",pointerEvents:"none",zIndex:10}}/>
+
+      {/* TOP BAR */}
+      <div style={{borderBottom:"1px solid #1a2535",padding:"12px 32px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
+          <div style={{width:7,height:7,borderRadius:"50%",background:"#4ade80",animation:"pulse 2s infinite"}}/>
+          <span style={{color:"#4ade80",fontSize:10,letterSpacing:3,fontWeight:700}}>WORLD SIGNAL</span>
+          <span style={{color:"#1e2d3d",margin:"0 8px"}}>│</span>
+          <span style={{color:"#3a5a6a",fontSize:9,letterSpacing:2}}>SYSTEM OPERACYJNY v2.1</span>
         </div>
-        <div style={{background:"#0d1117",border:"1px solid #1e2d3d",borderRadius:4,padding:"12px 16px",marginBottom:24,textAlign:"left"}}>
-          <div style={{fontSize:9,letterSpacing:2,color:"#3a5a6a",marginBottom:8}}>◈ STAN ŚWIATA — {new Date().toLocaleDateString('pl-PL')}</div>
-          {[{label:"Iran uderzy w USA (30 dni)",val:"38%",hot:true},{label:"Ceasefire Ukraina 2026",val:"41%",hot:false},{label:"Rosja: broń nukl. 2026",val:"12%",hot:true}].map(d=>(
-            <div key={d.label} style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#5a7a8a",marginBottom:4}}>
-              <span>{d.label}</span><span style={{color:d.hot?"#ff8c00":"#4ade80",fontWeight:700}}>{d.val}</span>
+        <span style={{fontSize:9,color:"#2a4050",letterSpacing:2}}>{new Date().toLocaleDateString('pl-PL')} — KLASYFIKACJA: TAJNE</span>
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div style={{flex:1,display:"grid",gridTemplateColumns:"1fr 1fr 1fr",minHeight:0}}>
+
+        {/* LEFT: Opis systemu */}
+        <div style={{borderRight:"1px solid #1a2535",padding:"48px 40px",display:"flex",flexDirection:"column",justifyContent:"center",animation:"fade-in 0.6s ease"}}>
+          <div style={{fontSize:9,letterSpacing:3,color:"#3a5a6a",marginBottom:24}}>◈ BRIEFING OPERACYJNY</div>
+          <div style={{fontSize:13,color:"#5a7a8a",lineHeight:2,marginBottom:32}}>
+            Sytuacja geopolityczna osiągnęła<br/>
+            punkt krytyczny. Jako doradca ds.<br/>
+            bezpieczeństwa narodowego, twoje<br/>
+            decyzje kształtują trajektorię świata.
+          </div>
+          <div style={{fontSize:11,color:"#c8d6e0",lineHeight:1.9,borderLeft:"2px solid #4a9eff",paddingLeft:16}}>
+            Dane Polymarket + newsy real-time.<br/>
+            50 scenariuszy kryzysowych.<br/>
+            Timer decyzji dla zdarzeń Tier 3.<br/>
+            Maven AI — rekomendacje strategiczne.
+          </div>
+        </div>
+
+        {/* CENTER: Logo + akcja */}
+        <div style={{padding:"48px 40px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",animation:"fade-in 0.8s ease"}}>
+          <div style={{textAlign:"center",marginBottom:40}}>
+            <div style={{fontSize:52,fontWeight:900,letterSpacing:10,color:"#c8d6e0",marginBottom:4,animation:"glow-title 3s ease-in-out infinite"}}>WORLD</div>
+            <div style={{fontSize:52,fontWeight:900,letterSpacing:10,color:"#4a9eff",marginBottom:32,animation:"glow-title 3s ease-in-out infinite"}}>SIGNAL</div>
+            <div style={{width:"100%",height:1,background:"linear-gradient(90deg,transparent,#1e2d3d 30%,#4a9eff 50%,#1e2d3d 70%,transparent)",marginBottom:32}}/>
+          </div>
+          <button className="intro-btn-primary" onClick={onStart} style={{width:"100%",maxWidth:320,padding:"16px",background:"transparent",border:"1px solid #4a9eff",color:"#4a9eff",fontFamily:"inherit",fontSize:13,letterSpacing:4,cursor:"pointer",borderRadius:3,marginBottom:12,transition:"all 0.2s"}}>
+            ▶ ROZPOCZNIJ BRIEFING
+          </button>
+          <button className="intro-btn-secondary" onClick={onGlobal} style={{width:"100%",maxWidth:320,padding:"13px",background:"transparent",border:"1px solid #1e2d3d",color:"#4a6a7a",fontFamily:"inherit",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:3,transition:"all 0.2s"}}>
+            ◉ GLOBALNA SYMULACJA
+          </button>
+        </div>
+
+        {/* RIGHT: Stan świata */}
+        <div style={{borderLeft:"1px solid #1a2535",padding:"48px 40px",display:"flex",flexDirection:"column",justifyContent:"center",animation:"fade-in 1s ease"}}>
+          <div style={{fontSize:9,letterSpacing:3,color:"#ff8c00",marginBottom:24}}>◈ STAN ŚWIATA — LIVE</div>
+          {[
+            {label:"Iran uderzy w USA (30 dni)",val:38,hot:true},
+            {label:"Ceasefire Ukraina 2026",val:41,hot:false},
+            {label:"Rosja: broń nukl. 2026",val:12,hot:true},
+            {label:"Ekspansja NATO do 2027",val:67,hot:false},
+            {label:"Recesja globalna 2027",val:78,hot:true},
+          ].map(d=>(
+            <div key={d.label} style={{marginBottom:16,padding:"10px 14px",background:"#0d1117",border:"1px solid #1a2535",borderRadius:3}}>
+              <div style={{display:"flex",justifyContent:"space-between",marginBottom:6}}>
+                <span style={{fontSize:10,color:"#c8d6e0"}}>{d.label}</span>
+                <span style={{fontSize:13,color:d.hot?"#ff8c00":"#4ade80",fontWeight:700}}>{d.val}%</span>
+              </div>
+              <div style={{background:"#0a0f14",height:4,borderRadius:2,overflow:"hidden"}}>
+                <div style={{height:"100%",width:`${d.val}%`,background:`linear-gradient(90deg,${d.hot?"#ff8c0066":"#4ade8066"},${d.hot?"#ff8c00":"#4ade80"})`,borderRadius:2}}/>
+              </div>
             </div>
           ))}
         </div>
-        <button onClick={onStart} onMouseEnter={e=>{e.target.style.background="rgba(74,158,255,0.1)"}} onMouseLeave={e=>{e.target.style.background="transparent"}} style={{width:"100%",padding:"14px",background:"transparent",border:"1px solid #4a9eff",color:"#4a9eff",fontFamily:"inherit",fontSize:13,letterSpacing:4,cursor:"pointer",borderRadius:3,marginBottom:10,transition:"all 0.2s"}}>
-          ▶ ROZPOCZNIJ BRIEFING
-        </button>
-        <button onClick={onGlobal} onMouseEnter={e=>{e.target.style.borderColor="#a78bfa";e.target.style.color="#a78bfa"}} onMouseLeave={e=>{e.target.style.borderColor="#1e2d3d";e.target.style.color="#4a6a7a"}} style={{width:"100%",padding:"12px",background:"transparent",border:"1px solid #1e2d3d",color:"#4a6a7a",fontFamily:"inherit",fontSize:11,letterSpacing:3,cursor:"pointer",borderRadius:3}}>
-          ◉ GLOBALNA SYMULACJA
-        </button>
+
+      </div>
+
+      {/* BOTTOM BAR */}
+      <div style={{borderTop:"1px solid #1a2535",padding:"8px 32px",display:"flex",justifyContent:"space-between",alignItems:"center",flexShrink:0}}>
+        <span style={{fontSize:9,color:"#2a4050",letterSpacing:1}}>MAVEN AI — SYSTEM REKOMENDACJI STRATEGICZNYCH AKTYWNY</span>
+        <span style={{fontSize:9,color:"#2a4050",letterSpacing:1}}>50 SCENARIUSZY KRYZYSOWYCH</span>
       </div>
     </div>
   );
