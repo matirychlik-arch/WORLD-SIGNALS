@@ -158,122 +158,153 @@ export default function WorldSignal() {
   if(screen==="global") return <GlobalScreen data={GLOBAL_DATA} onBack={()=>setScreen("intro")}/>;
 
   return (
-    <div style={{background:"#080c10",minHeight:"100vh",color:"#c8d6e0",fontFamily:"'Courier New',monospace",display:"flex",flexDirection:"column",maxWidth:480,margin:"0 auto",position:"relative",overflow:"hidden",...(shake?{animation:"shake 0.3s ease-in-out"}:{})}}>
+    <div style={{background:"#080c10",height:"100vh",color:"#c8d6e0",fontFamily:"'Courier New',monospace",display:"flex",flexDirection:"column",position:"relative",overflow:"hidden",...(shake?{animation:"shake 0.3s ease-in-out"}:{})}}>
       <style>{`
         @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
         @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
         @keyframes slide-up{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
         @keyframes glow{0%,100%{box-shadow:0 0 8px rgba(255,34,68,0.3)}50%{box-shadow:0 0 20px rgba(255,34,68,0.8)}}
         @keyframes timer-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.05)}}
-        .choice-btn:hover{transform:scale(1.01)} .choice-btn:active{transform:scale(0.98)}
+        .choice-btn:hover{background:rgba(74,158,255,0.05)!important;border-color:#2a4a6a!important} .choice-btn:active{transform:scale(0.99)}
         .metric-bar{transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
       `}</style>
 
       {/* HEADER */}
-      <div style={{background:"#0d1117",borderBottom:"1px solid #1e2d3d",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
+      <div style={{background:"#0a0e14",borderBottom:"1px solid #1e2d3d",padding:"10px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
+        <div style={{display:"flex",alignItems:"center",gap:10}}>
           <div style={{width:8,height:8,borderRadius:"50%",background:"#4ade80",animation:"pulse 2s infinite"}}/>
           <span style={{color:"#4ade80",fontSize:11,letterSpacing:3,fontWeight:700}}>WORLD SIGNAL</span>
+          <span style={{color:"#1e2d3d",margin:"0 8px"}}>│</span>
+          <span style={{color:"#3a5a6a",fontSize:10,letterSpacing:2}}>CENTRUM ZARZĄDZANIA KRYZYSEM</span>
         </div>
-        <div style={{display:"flex",gap:16,alignItems:"center"}}>
-          <span style={{color:"#4a9eff",fontSize:11}}>DZIEŃ {day}</span>
-          <div style={{padding:"2px 8px",borderRadius:2,background:nuclearRisk>50?"rgba(255,34,68,0.2)":"rgba(74,222,128,0.1)",border:`1px solid ${nuclearRisk>50?"#ff2244":"#4ade80"}`,animation:nuclearRisk>50?"glow 1.5s infinite":"none"}}>
-            <span style={{fontSize:10,color:doomColor}}>☢ {nuclearRisk}%</span>
+        <div style={{display:"flex",gap:20,alignItems:"center"}}>
+          <span style={{color:"#4a9eff",fontSize:11,letterSpacing:2}}>DZIEŃ {day}</span>
+          <div style={{padding:"3px 10px",borderRadius:2,background:nuclearRisk>50?"rgba(255,34,68,0.2)":"rgba(74,222,128,0.1)",border:`1px solid ${nuclearRisk>50?"#ff2244":"#4ade80"}`,animation:nuclearRisk>50?"glow 1.5s infinite":"none"}}>
+            <span style={{fontSize:10,color:doomColor}}>☢ RYZYKO NUK. {nuclearRisk}%</span>
           </div>
-        </div>
-      </div>
-
-      {/* METRYKI */}
-      <div style={{background:"#0a0f14",padding:"12px 16px",borderBottom:"1px solid #1a2535"}}>
-        {[{key:"tension",label:"NAPIĘCIE MILITARNE",color:"#ff4444",icon:"⚔"},{key:"economy",label:"GOSPODARKA",color:"#4ade80",icon:"◈"},{key:"stability",label:"STABILNOŚĆ POLITYCZNA",color:"#4a9eff",icon:"⬡"},{key:"nuclear",label:"RYZYKO NUKLEARNE",color:"#ff8c00",icon:"☢"}].map(m=>(
-          <div key={m.key} style={{marginBottom:6}}>
-            <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
-              <span style={{fontSize:9,letterSpacing:2,color:"#5a7a8a"}}>{m.icon} {m.label}</span>
-              <span style={{fontSize:10,color:m.color,fontWeight:700}}>{metrics[m.key]}%</span>
-            </div>
-            <div style={{background:"#1a2535",height:4,borderRadius:2,overflow:"hidden"}}>
-              <div className="metric-bar" style={{height:"100%",width:`${metrics[m.key]}%`,background:`linear-gradient(90deg,${m.color}88,${m.color})`,borderRadius:2}}/>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* POLYMARKET TICKER */}
-      <div style={{background:"#0d1117",padding:"6px 16px",borderBottom:"1px solid #1e2d3d"}}>
-        <div style={{display:"flex",gap:16,fontSize:9,color:"#5a7a8a",overflowX:"auto",whiteSpace:"nowrap"}}>
-          <span style={{color:"#ff8c00",letterSpacing:1,flexShrink:0}}>◈ POLYMARKET</span>
-          {polymarketData.map(p=>(
-            <span key={p.label} style={{flexShrink:0}}>
-              <span style={{color:"#c8d6e0"}}>{p.label}</span>
-              <span style={{color:p.prob>50?"#ff4444":"#4ade80",marginLeft:4}}>{p.prob}%</span>
-            </span>
-          ))}
+          <span style={{fontSize:9,color:"#2a4050",letterSpacing:2}}>KLASYFIKACJA: TAJNE</span>
         </div>
       </div>
 
-      {/* EVENT CARD */}
-      <div style={{flex:1,padding:"16px",display:"flex",flexDirection:"column",gap:12,animation:"slide-up 0.3s ease"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"3px 10px",borderRadius:2,background:`${THEATER_COLORS[currentEvent.theater]||"#a78bfa"}15`,border:`1px solid ${THEATER_COLORS[currentEvent.theater]||"#a78bfa"}`}}>
-            <span style={{fontSize:10,letterSpacing:2,color:THEATER_COLORS[currentEvent.theater]||"#a78bfa",fontWeight:700}}>{currentEvent.theater}</span>
-          </div>
-          <div style={{display:"flex",alignItems:"center",gap:8}}>
-            {timeLeft!==null&&(
-              <div style={{display:"flex",alignItems:"center",gap:4,padding:"2px 8px",borderRadius:2,background:timeLeft<=10?"rgba(255,34,68,0.15)":"rgba(255,140,0,0.1)",border:`1px solid ${timeLeft<=10?"#ff2244":"#ff8c00"}`,animation:timeLeft<=10?"timer-pulse 0.5s ease-in-out infinite":"none"}}>
-                <span style={{fontSize:10,color:timeLeft<=10?"#ff2244":"#ff8c00",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>⏱ {String(timeLeft).padStart(2,"0")}s</span>
-              </div>
-            )}
-            <div style={{display:"flex",gap:4}}>
-              {[1,2,3].map(i=><div key={i} style={{width:6,height:6,borderRadius:1,background:i<=currentEvent.tier?"#ff8c00":"#1e2d3d"}}/>)}
-            </div>
-          </div>
-        </div>
+      {/* 3-COLUMN DASHBOARD */}
+      <div style={{display:"grid",gridTemplateColumns:"270px 1fr 230px",flex:1,minHeight:0,overflow:"hidden"}}>
 
-        <div style={{background:"#0d1117",border:"1px solid #1e2d3d",borderRadius:4,padding:"14px 16px"}}>
-          <div style={{fontSize:13,lineHeight:1.5,color:"#e8f0f5",fontWeight:700,marginBottom:8}}>{currentEvent.headline}</div>
-          <div style={{fontSize:10,color:"#3a5a6a",display:"flex",alignItems:"center",gap:4}}>
-            <span style={{color:"#4a9eff"}}>▸</span>{currentEvent.source}
-          </div>
-        </div>
-
-        <button onClick={()=>setShowAI(!showAI)} style={{background:showAI?"rgba(74,158,255,0.15)":"transparent",border:`1px solid ${showAI?"#4a9eff":"#1e2d3d"}`,color:showAI?"#4a9eff":"#3a5a6a",borderRadius:3,padding:"6px 12px",fontSize:10,letterSpacing:2,cursor:"pointer",textAlign:"left",transition:"all 0.2s",fontFamily:"inherit"}}>
-          {showAI?"▼":"▶"} MAVEN AI: {showAI?currentEvent.choices[currentEvent.aiRecommendation].label.toUpperCase():"POKAŻ REKOMENDACJĘ"}
-        </button>
-
-        {showAI&&(
-          <div style={{background:"rgba(74,158,255,0.06)",border:"1px solid #1e3d5a",borderRadius:3,padding:"10px 12px",fontSize:11,color:"#5a9abf",lineHeight:1.5}}>
-            {currentEvent.aiReason}
-          </div>
-        )}
-
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {currentEvent.choices.map((choice,i)=>{
-            const isAI=i===currentEvent.aiRecommendation;
-            const isPending=chosenLabel===choice.label;
-            return(
-              <button key={i} className="choice-btn" onClick={()=>makeChoice(i)} disabled={animating} style={{background:isPending?"rgba(74,222,128,0.1)":isAI&&showAI?"rgba(74,158,255,0.08)":"#0d1117",border:`1px solid ${isPending?"#4ade80":isAI&&showAI?"#1e3d5a":"#1e2d3d"}`,color:isPending?"#4ade80":"#c8d6e0",borderRadius:4,padding:"12px 14px",fontSize:12,textAlign:"left",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",transition:"all 0.2s",lineHeight:1.4,fontFamily:"inherit"}}>
-                <span>{choice.label}</span>
-                <div style={{display:"flex",gap:4,flexShrink:0,marginLeft:8}}>
-                  {isAI&&showAI&&<span style={{fontSize:9,color:"#4a9eff",letterSpacing:1,border:"1px solid #1e3d5a",padding:"1px 5px",borderRadius:2}}>AI</span>}
-                  <span style={{fontSize:16,color:"#3a5a6a"}}>›</span>
+        {/* LEFT: Metryki + Polymarket */}
+        <div style={{borderRight:"1px solid #1a2535",display:"flex",flexDirection:"column",overflow:"hidden",background:"#080c10"}}>
+          <div style={{padding:"16px 16px 14px",borderBottom:"1px solid #1a2535"}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#3a5a6a",marginBottom:14}}>◈ WSKAŹNIKI GLOBALNE</div>
+            {[{key:"tension",label:"NAPIĘCIE MILITARNE",color:"#ff4444",icon:"⚔"},{key:"economy",label:"GOSPODARKA",color:"#4ade80",icon:"◈"},{key:"stability",label:"STABILNOŚĆ",color:"#4a9eff",icon:"⬡"},{key:"nuclear",label:"RYZYKO NUKLEARNE",color:"#ff8c00",icon:"☢"}].map(m=>(
+              <div key={m.key} style={{marginBottom:12}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+                  <span style={{fontSize:9,letterSpacing:1,color:"#5a7a8a"}}>{m.icon} {m.label}</span>
+                  <span style={{fontSize:12,color:m.color,fontWeight:700}}>{metrics[m.key]}%</span>
                 </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {pendingEffects&&(
-          <div style={{background:"#0a0f14",border:"1px solid #1e2d3d",borderRadius:3,padding:"8px 12px",display:"flex",gap:12,justifyContent:"center",animation:"slide-up 0.2s ease"}}>
-            {Object.entries(pendingEffects).filter(([,v])=>v!==0).map(([k,v])=>(
-              <span key={k} style={{fontSize:11,color:v>0?"#ff4444":"#4ade80"}}>{k.toUpperCase().substring(0,3)} {v>0?"+":""}{v}</span>
+                <div style={{background:"#0f1920",height:6,borderRadius:2,overflow:"hidden",border:"1px solid #1a2535"}}>
+                  <div className="metric-bar" style={{height:"100%",width:`${metrics[m.key]}%`,background:`linear-gradient(90deg,${m.color}66,${m.color})`,borderRadius:2}}/>
+                </div>
+              </div>
             ))}
           </div>
-        )}
-      </div>
+          <div style={{padding:"16px",flex:1,overflow:"auto"}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#ff8c00",marginBottom:12}}>◈ POLYMARKET LIVE</div>
+            {polymarketData.map(p=>(
+              <div key={p.label} style={{marginBottom:10,padding:"10px 12px",background:"#0d1117",border:"1px solid #1a2535",borderRadius:3}}>
+                <div style={{fontSize:10,color:"#c8d6e0",marginBottom:7,lineHeight:1.4}}>{p.label}</div>
+                <div style={{display:"flex",alignItems:"center",gap:8}}>
+                  <div style={{background:"#0f1920",height:5,borderRadius:2,flex:1,overflow:"hidden",border:"1px solid #1a2535"}}>
+                    <div style={{height:"100%",width:`${p.prob}%`,background:`linear-gradient(90deg,${p.prob>50?"#ff4444":"#4ade80"}66,${p.prob>50?"#ff4444":"#4ade80"})`,borderRadius:2,transition:"width 1s ease"}}/>
+                  </div>
+                  <span style={{fontSize:13,color:p.prob>50?"#ff4444":"#4ade80",fontWeight:700,minWidth:36,textAlign:"right"}}>{p.prob}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-      <div style={{background:"#080c10",borderTop:"1px solid #1a2535",padding:"8px 16px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <span style={{fontSize:9,color:"#2a4050",letterSpacing:2}}>KLASYFIKACJA: TAJNE</span>
-        <span style={{fontSize:9,color:"#2a4050"}}>{EVENTS.length-(eventIdx%EVENTS.length)} POZOSTAŁYCH BRIEFINGÓW</span>
+        {/* CENTER: Event card + wybory */}
+        <div style={{display:"flex",flexDirection:"column",padding:"28px 40px",gap:18,overflow:"auto",animation:"slide-up 0.3s ease",background:"#080c10"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <div style={{display:"inline-flex",alignItems:"center",gap:6,padding:"5px 14px",borderRadius:2,background:`${THEATER_COLORS[currentEvent.theater]||"#a78bfa"}15`,border:`1px solid ${THEATER_COLORS[currentEvent.theater]||"#a78bfa"}`}}>
+              <span style={{fontSize:11,letterSpacing:3,color:THEATER_COLORS[currentEvent.theater]||"#a78bfa",fontWeight:700}}>{currentEvent.theater}</span>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:14}}>
+              {timeLeft!==null&&(
+                <div style={{display:"flex",alignItems:"center",gap:4,padding:"4px 12px",borderRadius:2,background:timeLeft<=10?"rgba(255,34,68,0.15)":"rgba(255,140,0,0.1)",border:`1px solid ${timeLeft<=10?"#ff2244":"#ff8c00"}`,animation:timeLeft<=10?"timer-pulse 0.5s ease-in-out infinite":"none"}}>
+                  <span style={{fontSize:12,color:timeLeft<=10?"#ff2244":"#ff8c00",fontWeight:700,fontVariantNumeric:"tabular-nums"}}>⏱ {String(timeLeft).padStart(2,"0")}s</span>
+                </div>
+              )}
+              <div style={{display:"flex",gap:5,alignItems:"center"}}>
+                <span style={{fontSize:9,color:"#3a5a6a",letterSpacing:1,marginRight:4}}>PRIORYTET</span>
+                {[1,2,3].map(i=><div key={i} style={{width:9,height:9,borderRadius:1,background:i<=currentEvent.tier?"#ff8c00":"#1a2535"}}/>)}
+              </div>
+            </div>
+          </div>
+
+          <div style={{background:"#0d1117",border:"1px solid #1e2d3d",borderRadius:4,padding:"22px 26px"}}>
+            <div style={{fontSize:17,lineHeight:1.6,color:"#e8f0f5",fontWeight:700,marginBottom:12}}>{currentEvent.headline}</div>
+            <div style={{fontSize:10,color:"#3a5a6a",display:"flex",alignItems:"center",gap:4}}>
+              <span style={{color:"#4a9eff"}}>▸</span>{currentEvent.source}
+            </div>
+          </div>
+
+          <button onClick={()=>setShowAI(!showAI)} style={{background:showAI?"rgba(74,158,255,0.15)":"transparent",border:`1px solid ${showAI?"#4a9eff":"#1e2d3d"}`,color:showAI?"#4a9eff":"#3a5a6a",borderRadius:3,padding:"9px 16px",fontSize:10,letterSpacing:2,cursor:"pointer",textAlign:"left",transition:"all 0.2s",fontFamily:"inherit"}}>
+            {showAI?"▼":"▶"} MAVEN AI: {showAI?currentEvent.choices[currentEvent.aiRecommendation].label.toUpperCase():"POKAŻ REKOMENDACJĘ"}
+          </button>
+
+          {showAI&&(
+            <div style={{background:"rgba(74,158,255,0.06)",border:"1px solid #1e3d5a",borderRadius:3,padding:"13px 16px",fontSize:12,color:"#5a9abf",lineHeight:1.6}}>
+              {currentEvent.aiReason}
+            </div>
+          )}
+
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            {currentEvent.choices.map((choice,i)=>{
+              const isAI=i===currentEvent.aiRecommendation;
+              const isPending=chosenLabel===choice.label;
+              return(
+                <button key={i} className="choice-btn" onClick={()=>makeChoice(i)} disabled={animating} style={{background:isPending?"rgba(74,222,128,0.1)":isAI&&showAI?"rgba(74,158,255,0.08)":"#0d1117",border:`1px solid ${isPending?"#4ade80":isAI&&showAI?"#1e3d5a":"#1e2d3d"}`,color:isPending?"#4ade80":"#c8d6e0",borderRadius:4,padding:"15px 18px",fontSize:13,textAlign:"left",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center",transition:"all 0.2s",lineHeight:1.4,fontFamily:"inherit"}}>
+                  <span>{choice.label}</span>
+                  <div style={{display:"flex",gap:6,flexShrink:0,marginLeft:12}}>
+                    {isAI&&showAI&&<span style={{fontSize:9,color:"#4a9eff",letterSpacing:1,border:"1px solid #1e3d5a",padding:"2px 6px",borderRadius:2}}>AI</span>}
+                    <span style={{fontSize:20,color:"#3a5a6a"}}>›</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {pendingEffects&&(
+            <div style={{background:"#0a0f14",border:"1px solid #1e2d3d",borderRadius:3,padding:"12px 18px",display:"flex",gap:20,justifyContent:"center",animation:"slide-up 0.2s ease"}}>
+              {Object.entries(pendingEffects).filter(([,v])=>v!==0).map(([k,v])=>(
+                <span key={k} style={{fontSize:13,color:v>0?"#ff4444":"#4ade80"}}>{k.toUpperCase().substring(0,3)} {v>0?"+":""}{v}</span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT: Log operacyjny */}
+        <div style={{borderLeft:"1px solid #1a2535",display:"flex",flexDirection:"column",overflow:"hidden",background:"#080c10"}}>
+          <div style={{padding:"16px",borderBottom:"1px solid #1a2535",flexShrink:0}}>
+            <div style={{fontSize:9,letterSpacing:3,color:"#3a5a6a"}}>◈ LOG OPERACYJNY</div>
+          </div>
+          <div style={{flex:1,overflow:"auto",padding:"12px"}}>
+            {history.length===0?(
+              <div style={{fontSize:10,color:"#2a4050",textAlign:"center",marginTop:24,letterSpacing:1}}>BRAK DANYCH</div>
+            ):history.slice().reverse().map((h,i)=>(
+              <div key={i} style={{marginBottom:8,padding:"9px 11px",background:"#0d1117",border:"1px solid #1a2535",borderRadius:3}}>
+                <div style={{display:"flex",justifyContent:"space-between",marginBottom:4}}>
+                  <span style={{fontSize:9,color:THEATER_COLORS[h.theater]||"#a78bfa",letterSpacing:1}}>{h.theater}</span>
+                  {h.wasAI&&<span style={{fontSize:9,color:"#4a9eff"}}>AI✓</span>}
+                </div>
+                <div style={{fontSize:10,color:"#5a7a8a",lineHeight:1.4}}>{h.choice}</div>
+              </div>
+            ))}
+          </div>
+          <div style={{padding:"10px 14px",borderTop:"1px solid #1a2535",flexShrink:0}}>
+            <div style={{fontSize:9,color:"#2a4050",letterSpacing:1}}>{EVENTS.length-(eventIdx%EVENTS.length)} POZOSTAŁYCH BRIEFINGÓW</div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -281,7 +312,7 @@ export default function WorldSignal() {
 
 function IntroScreen({onStart,onGlobal}){
   return(
-    <div style={{background:"#080c10",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:"'Courier New',monospace",padding:24,maxWidth:480,margin:"0 auto"}}>
+    <div style={{background:"#080c10",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:"'Courier New',monospace",padding:24}}>
       <style>{`@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}} @keyframes fade-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}`}</style>
       <div style={{position:"fixed",top:0,left:0,right:0,height:"2px",background:"linear-gradient(90deg,transparent,rgba(74,158,255,0.3),transparent)",animation:"scan 8s linear infinite",pointerEvents:"none"}}/>
       <div style={{textAlign:"center",animation:"fade-in 0.8s ease",maxWidth:380,width:"100%"}}>
@@ -318,7 +349,7 @@ function ResultScreen({metrics,history,day,onRestart,onGlobal}){
   const score=Math.round((100-metrics.nuclear)*0.4+metrics.stability*0.3+metrics.economy*0.3);
   const shareText=`🌐 WORLD SIGNAL: Świat przetrwał ${day} dni. Ryzyko nukl.: ${metrics.nuclear}%. Wynik: ${score}/100.`;
   return(
-    <div style={{background:"#080c10",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:"'Courier New',monospace",padding:24,maxWidth:480,margin:"0 auto"}}>
+    <div style={{background:"#080c10",minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",fontFamily:"'Courier New',monospace",padding:24}}>
       <style>{`@keyframes fade-in{from{opacity:0}to{opacity:1}}`}</style>
       <div style={{width:"100%",maxWidth:380,animation:"fade-in 0.8s ease"}}>
         <div style={{textAlign:"center",marginBottom:24}}>
@@ -357,7 +388,7 @@ function ResultScreen({metrics,history,day,onRestart,onGlobal}){
 function GlobalScreen({data,onBack}){
   const pct=data.byChoice.map(v=>Math.round((v/data.total)*100));
   return(
-    <div style={{background:"#080c10",minHeight:"100vh",fontFamily:"'Courier New',monospace",padding:24,maxWidth:480,margin:"0 auto",color:"#c8d6e0"}}>
+    <div style={{background:"#080c10",minHeight:"100vh",fontFamily:"'Courier New',monospace",padding:24,maxWidth:700,margin:"0 auto",color:"#c8d6e0"}}>
       <button onClick={onBack} style={{background:"transparent",border:"none",color:"#3a5a6a",cursor:"pointer",fontSize:11,letterSpacing:2,marginBottom:20,fontFamily:"inherit"}}>‹ POWRÓT</button>
       <div style={{fontSize:11,letterSpacing:4,color:"#a78bfa",marginBottom:4}}>◉ TRYB</div>
       <div style={{fontSize:22,fontWeight:900,letterSpacing:4,marginBottom:4}}>GLOBALNA</div>
